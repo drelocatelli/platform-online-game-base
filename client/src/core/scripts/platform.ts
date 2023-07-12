@@ -1,6 +1,7 @@
 import useGlobalState from '@core/store/global';
 import Konva from 'konva';
 import { Rect } from 'konva/lib/shapes/Rect';
+import { Layer } from 'konva/lib/Layer';
 
 interface IPlatformProps {
     background?: string;
@@ -13,8 +14,8 @@ interface IPlatformProps {
 }
 
 class Platform {
-    className?: string;
     element?: Rect;
+    layer?: Layer;
     background = '#33b233';
     position = {
         x: 0,
@@ -25,8 +26,10 @@ class Platform {
     height = 20;
 
     constructor(props?: IPlatformProps) {
+        const globalState = useGlobalState();
+        const id = `platform_${globalState.game.layers.length}`;
         let element = new Konva.Rect({
-            id: this?.className ? `platform ${this.className}` : 'platform',
+            id: id,
             x: props?.position?.x ? props?.position.x : this.position.x,
             y: props?.position?.y ? props?.position.y : this.position.y,
             width: props?.width ?? this.width,
@@ -34,11 +37,15 @@ class Platform {
             fill: props?.background ?? this.background,
         });
         this.element = element;
+        this.layer = new Konva.Layer({ id: id });
+        globalState.addLayer(this.layer);
     }
 
     draw() {
         const { game } = useGlobalState();
-        game.layer.add(this.element);
+
+        this.layer!.add(this.element as Rect);
+        game.stage.add(this.layer);
     }
 }
 

@@ -7,16 +7,16 @@ function Visual(this: Player) {
 
     const create = () => {
         let element = new Konva.Rect({
-            id: this.id,
+            id: `player_${this.id}`,
             x: this.position.x,
             y: this.position.y,
             width: this.width,
             height: this.height,
             fill: this.color,
         });
-        game.layer.add(element);
-        game.stage.add(game.layer);
         this.elements.push(element);
+        this.layer.add(element);
+        game.stage.add(this.layer);
     };
 
     const remove = () => {

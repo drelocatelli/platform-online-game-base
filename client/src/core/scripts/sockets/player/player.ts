@@ -6,6 +6,8 @@ import Connection from './connection';
 class PlayerSocket {
     players: Player[] = [];
 
+    constructor() {}
+
     first() {
         return this.players[0];
     }

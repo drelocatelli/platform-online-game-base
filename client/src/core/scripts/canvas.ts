@@ -16,7 +16,6 @@ class Canvas {
                 height: this.canvas.offsetHeight,
             }),
         );
-        globalState.setLayer(new Konva.Layer());
     }
 }
 

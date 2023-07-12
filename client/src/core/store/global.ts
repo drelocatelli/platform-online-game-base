@@ -8,18 +8,18 @@ interface IGameStore {
     started: boolean;
     platforms: Platform[];
     stage?: Stage;
-    layer?: Layer;
+    layers?: Layer[];
 }
 
 const useGlobalState = defineStore('global', () => {
-    const game = ref<IGameStore>({ started: false, platforms: [], stage: undefined, layer: undefined });
+    const game = ref<IGameStore>({ started: false, platforms: [], stage: undefined, layers: [] });
 
     function setStage(stage: Stage) {
         game.value.stage = stage;
     }
 
-    function setLayer(layer: Layer) {
-        game.value.layer = layer;
+    function addLayer(layer: Layer) {
+        game.value.layers?.push(layer);
     }
 
     function setGameStatus(started: boolean) {
@@ -31,7 +31,7 @@ const useGlobalState = defineStore('global', () => {
         game.value.platforms[idx].element!.x(currentPosX - value);
     }
 
-    return { game, setGameStatus, decrementPlatformPositionX, setStage, setLayer };
+    return { game, setGameStatus, decrementPlatformPositionX, setStage, addLayer };
 });
 
 export default useGlobalState;

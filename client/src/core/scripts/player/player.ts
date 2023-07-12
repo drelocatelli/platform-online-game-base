@@ -3,6 +3,7 @@ import Canvas from '../canvas';
 import Collision from './collision';
 import Movement from './movement';
 import Visual from './visual';
+import { Layer } from 'konva/lib/Layer';
 
 interface IPlayerAttrib {
     position?: { x: number; y: number };
@@ -11,6 +12,7 @@ interface IPlayerAttrib {
 
 class Player extends Canvas {
     id;
+    layer: Layer;
     position;
     width;
     height;
@@ -45,8 +47,9 @@ class Player extends Canvas {
         stop_velocity: 5,
     };
 
-    constructor(props: { id: string; color: string; socketId: string; attr?: IPlayerAttrib }) {
+    constructor(props: { id: string; color: string; socketId: string; layer: Layer; attr?: IPlayerAttrib }) {
         super();
+        this.layer = props.layer;
         this.color = props.color;
         this.id = props.id;
         this.currentPlayer = props.socketId == props.id;

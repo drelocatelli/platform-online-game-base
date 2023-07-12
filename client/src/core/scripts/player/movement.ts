@@ -32,11 +32,8 @@ function Movement(this: Player) {
         this.currentPosition = this.currentPosition!;
 
         // current player always on top
-        if (this.currentPlayer && this.elements) {
-            let currentElement = this.elements[this.elements.length - 1];
-            if (currentElement) {
-                currentElement.zIndex(currentElement.zIndex() + 1);
-            }
+        if (this.currentPlayer) {
+            this.elements.forEach((element) => element?.moveToTop());
         }
         // move platform with keys
         if (this.firstPlayerMoveBgPosition) {

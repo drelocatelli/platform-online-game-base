@@ -1,6 +1,6 @@
 import socket from '@core/server';
 import PlayerSocket from './player';
-import Player from '@core/scripts/player/player';
+import Create from './create';
 
 interface ILogin {
     id: string;
@@ -15,7 +15,7 @@ function Connection(this: PlayerSocket) {
     console.log(socket);
     socket.on('login', (e: ILogin) => {
         console.log(`%c Joined to game: ${e.id}/${e.ip}`, 'background:green; color:white; font-size:18px;');
-        e.users.forEach((user) => this.create(new Player({ id: user.id, color: user.color, socketId: socket.id })));
+        e.users.forEach((user: any) => Create.bind(this)(user, socket));
     });
     socket.on('logout', (e: { id: string }) => {
         console.log(`%c Exited from game: ${e.id}`, 'background:red; color:white; font-size:18px;');
