@@ -1,6 +1,6 @@
 import GameSocket from './sockets/game';
 import PlatformSocket from './sockets/platform';
-import PlayerSocket from './sockets/player';
+import PlayerSocket from './sockets/player/player';
 
 class Service {
     static sockets = {
