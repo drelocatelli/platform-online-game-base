@@ -7,11 +7,6 @@ interface IGameStore {
     platforms: Platform[];
 }
 
-interface IPosition {
-    x: number;
-    y: number;
-}
-
 const useGlobalState = defineStore('global', () => {
     const game = ref<IGameStore>({ started: false, platforms: [] });
 
@@ -19,12 +14,11 @@ const useGlobalState = defineStore('global', () => {
         game.value.started = started;
     }
 
-    function setPlatformPosition(idx: number, props: IPosition) {
-        game.value.platforms[idx].position = props;
-        console.log(game.value.platforms[idx].element);
+    function decrementPlatformPositionX(idx: number, value: number) {
+        game.value.platforms[idx].position.x -= value;
     }
 
-    return { game, setGameStatus, setPlatformPosition };
+    return { game, setGameStatus, decrementPlatformPositionX };
 });
 
 export default useGlobalState;

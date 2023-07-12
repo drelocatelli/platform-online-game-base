@@ -4,7 +4,7 @@ import Player from './player';
 import useGlobalState from '@core/store/global';
 
 function Movement(this: Player) {
-    const { game: gameState } = useGlobalState();
+    const { game: gameState, decrementPlatformPositionX } = useGlobalState();
 
     const gravity = () => {
         this.position.y += this.velocity.y;
@@ -28,21 +28,20 @@ function Movement(this: Player) {
                 currentElement.style.zIndex = (this.elements.length + 1).toString();
             }
         }
-
-        if (this.keys.right.pressed) {
-            this.velocity.x = Player.defaultProps.stop_velocity;
-        } else this.velocity.x = 0;
-
         // move platform with keys
         if (this.id === Service.sockets.player.first().id) {
             gameState.platforms.forEach((_: Platform, i: number) => {
                 if (this.keys.right.pressed) {
-                    gameState.platforms[i].position.x -= this.velocity.x;
+                    decrementPlatformPositionX(i, this.velocity.x);
                 } else if (this.canReturnBack && this.keys.left.pressed) {
-                    gameState.platforms[i].position.x += this.velocity.x;
+                    decrementPlatformPositionX(i, this.velocity.x);
                 }
             });
         }
+
+        if (this.keys.right.pressed) {
+            this.velocity.x = Player.defaultProps.stop_velocity;
+        } else this.velocity.x = 0;
     };
 
     return {
