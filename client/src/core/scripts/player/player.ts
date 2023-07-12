@@ -64,43 +64,20 @@ class Player extends Canvas {
 
     draw() {
         Visual.call(this).create();
-        // remove first elements
-        this.elements = this.canvas.querySelectorAll(`[data-id="${this.id}"]`);
-        Array.from(this.elements)
-            .slice(0, -1)
-            .forEach((element) => {
-                element.remove();
-            });
-        this.currentPosition = {
-            x: this.elements[this.elements.length - 1]?.getBoundingClientRect().x,
-            y: this.elements[this.elements.length - 1]?.getBoundingClientRect().y,
-            canvas: this.canvas.getBoundingClientRect(),
-        };
+        Visual.call(this).removeTracksPeriodically();
     }
 
     remove() {
-        if (this.animId) {
-            let removeAnim = requestAnimationFrame(this.remove.bind(this));
-            let containers = this.canvas.querySelectorAll(`[data-id="${this.id}"]`);
-            containers.forEach((container) => container.remove());
-            cancelAnimationFrame(this.animId);
-            if (containers.length == 0) {
-                cancelAnimationFrame(removeAnim);
-            }
-        }
+        Visual.call(this).remove();
     }
 
     update() {
         this.draw();
-        this.position.y += this.velocity.y;
-        this.position.x += this.velocity.x;
-
-        if (this.position.y + this.height + this.velocity.y <= this.canvas.offsetHeight) this.velocity.y += Player.defaultProps.gravity;
-        else this.velocity.y = 0;
+        Movement.call(this).gravity();
     }
 
     animate() {
-        Movement.call(this);
+        Movement.call(this).animate();
         Collision.call(this);
     }
 }
