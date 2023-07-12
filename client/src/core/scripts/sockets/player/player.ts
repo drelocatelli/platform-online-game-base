@@ -6,6 +6,10 @@ import Connection from './connection';
 class PlayerSocket {
     players: Player[] = [];
 
+    first() {
+        return this.players[0];
+    }
+
     get(id: string) {
         return this.players.find((p) => p.id == id);
     }

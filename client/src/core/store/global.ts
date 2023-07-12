@@ -1,10 +1,15 @@
-import Platform from '@core/scripts/platform';
+import Platform, { IPlatformProps } from '@core/scripts/platform';
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 
 interface IGameStore {
     started: boolean;
     platforms: Platform[];
+}
+
+interface IPosition {
+    x: number;
+    y: number;
 }
 
 const useGlobalState = defineStore('global', () => {
@@ -14,7 +19,12 @@ const useGlobalState = defineStore('global', () => {
         game.value.started = started;
     }
 
-    return { game, setGameStatus };
+    function setPlatformPosition(idx: number, props: IPosition) {
+        game.value.platforms[idx].position = props;
+        console.log(game.value.platforms[idx].element);
+    }
+
+    return { game, setGameStatus, setPlatformPosition };
 });
 
 export default useGlobalState;

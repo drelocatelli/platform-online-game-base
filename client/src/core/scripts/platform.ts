@@ -1,4 +1,4 @@
-interface IProps {
+interface IPlatformProps {
     background?: string;
     position?: {
         x?: number;
@@ -21,7 +21,7 @@ class Platform {
     width = 200;
     height = 20;
 
-    constructor(props?: IProps) {
+    constructor(props?: IPlatformProps) {
         this.canvas = document.querySelector('#canvas') as HTMLDivElement;
         this.element = document.createElement('div');
         this.background = props?.background ?? this.background;
@@ -31,11 +31,10 @@ class Platform {
             this.position.x = props?.position?.x ?? this.position.x;
             this.position.y = props?.position?.y ?? this.position.y;
         }
-        this.draw();
     }
 
     draw() {
-        this.element.classList.add('platform');
+        this.element.id = 'platform';
         if (this?.className) this.element.classList.add(this.className);
         this.element.style.cssText = `
             background: ${this.background};
@@ -50,4 +49,5 @@ class Platform {
     }
 }
 
+export type { IPlatformProps };
 export default Platform;

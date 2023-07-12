@@ -8,10 +8,10 @@ class Game {
         this.disableKeyScrolling();
         // window.alert('Please wait while contacting server...');
 
-        this.createPlatforms();
         Service.sockets.player.listen().connection();
         let splashEl = document.getElementById('splash') as HTMLDivElement;
         Service.sockets.player.listen().keyEvents();
+        this.createPlatforms();
         splashEl.style.display = 'none';
     }
 

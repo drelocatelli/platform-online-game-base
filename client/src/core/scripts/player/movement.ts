@@ -1,6 +1,11 @@
+import Platform from '../platform';
+import Service from '../service';
 import Player from './player';
+import useGlobalState from '@core/store/global';
 
 function Movement(this: Player) {
+    const { game: gameState } = useGlobalState();
+
     const gravity = () => {
         this.position.y += this.velocity.y;
         this.position.x += this.velocity.x;
@@ -10,6 +15,7 @@ function Movement(this: Player) {
 
     const animate = () => {
         this.animId = requestAnimationFrame(this.animate.bind(this));
+        gameState.platforms.forEach((platform: Platform) => platform.draw());
         this.update();
 
         this.elements = this.elements!;
@@ -28,13 +34,15 @@ function Movement(this: Player) {
         } else this.velocity.x = 0;
 
         // move platform with keys
-        // Service.sockets.platforms.elements.forEach((platform) => {
-        //     if (this.keys.right.pressed) {
-        //         platform.position.x -= this.velocity.y;
-        //     } else if (this.canReturnBack && this.keys.left.pressed) {
-        //         platform.position.x += this.velocity.y;
-        //     }
-        // });
+        if (this.id === Service.sockets.player.first().id) {
+            gameState.platforms.forEach((_: Platform, i: number) => {
+                if (this.keys.right.pressed) {
+                    gameState.platforms[i].position.x -= this.velocity.x;
+                } else if (this.canReturnBack && this.keys.left.pressed) {
+                    gameState.platforms[i].position.x += this.velocity.x;
+                }
+            });
+        }
     };
 
     return {

@@ -1,6 +1,6 @@
 class Canvas {
     canvas = document.querySelector('#canvas') as HTMLDivElement;
-    canReturnBack = false;
+    canReturnBack = true;
 
     constructor() {}
 }
