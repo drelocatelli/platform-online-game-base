@@ -30,7 +30,7 @@ function Visual(this: Player) {
         }
     };
 
-    const removeTracksPeriodically = () => {
+    const track = () => {
         this.elements = this.canvas.querySelectorAll(`[data-id="${this.id}"]`);
         Array.from(this.elements)
             .slice(0, -1)
@@ -46,7 +46,7 @@ function Visual(this: Player) {
 
     return {
         create,
-        removeTracksPeriodically,
+        track,
         remove,
     };
 }

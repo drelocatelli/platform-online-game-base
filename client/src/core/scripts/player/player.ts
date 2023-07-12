@@ -64,7 +64,7 @@ class Player extends Canvas {
 
     draw() {
         Visual.call(this).create();
-        Visual.call(this).removeTracksPeriodically();
+        Visual.call(this).track();
     }
 
     remove() {
