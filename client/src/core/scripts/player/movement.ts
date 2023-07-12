@@ -15,14 +15,25 @@ function Movement(this: Player) {
             else this.speed.y = 0;
     };
 
+    const resetPosition = () => {
+        // go to the position 0 every screen exit
+        if (this.scrollOffset === this.canvas.offsetWidth) {
+            this.position.x = 0;
+            this.screenLevel += 2;
+        } else if (this.screenLevel > 0 && this.scrollOffset / this.screenLevel === this.canvas.offsetWidth) {
+            this.position.x = 0;
+        }
+    };
+
     const scrollMoviment = () => {
         if (this.keys.right.pressed) {
             this.scrollOffset += Player.defaultProps.stop_speed;
-            console.log(this.scrollOffset);
+
             if (this.scrollOffset === gameState.winPositionX) {
                 doWhenWin.call(this);
                 this.keys.right.pressed = false;
             }
+            resetPosition();
         } else if (this.keys.left.pressed) {
             this.scrollOffset += Player.defaultProps.stop_speed;
         }

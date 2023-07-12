@@ -11,6 +11,7 @@ interface IPlayerAttrib {
 
 class Player extends Canvas {
     id;
+    screenLevel = 0;
     position;
     scrollOffset = 0;
     width;
