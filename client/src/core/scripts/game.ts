@@ -4,7 +4,7 @@ class Game {
     constructor() {
         this.disableKeyScrolling();
         Service.sockets.player.listen().connection();
-        Service.sockets.player.listen().keyboards();
+        Service.sockets.player.listen().keyEvents();
     }
 
     disableKeyScrolling() {

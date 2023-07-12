@@ -104,6 +104,15 @@ class Player extends Canvas {
 
         this.update();
 
+        // current player always on top
+        if (this.currentPlayer) {
+            let currentElement = elements[elements.length - 1];
+            if (currentElement) {
+                currentElement.style.zIndex = (elements.length + 1).toString();
+            }
+            console.log(this.id);
+        }
+
         const currentPosition = {
             x: elements[elements.length - 1]?.getBoundingClientRect().x,
             y: elements[elements.length - 1]?.getBoundingClientRect().y,

@@ -31,7 +31,7 @@ class PlayerSocket {
                 this.remove(e.id);
             });
         };
-        const keyboards = () => {
+        const keyEvents = () => {
             document.addEventListener('keydown', (e) => {
                 socket.emit('keydown', { key: e.code, id: socket.id });
             });
@@ -91,7 +91,7 @@ class PlayerSocket {
 
         return {
             connection,
-            keyboards,
+            keyEvents,
         };
     }
 
