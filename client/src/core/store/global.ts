@@ -2,9 +2,10 @@ import Platform from '@core/scripts/platform';
 import { Layer } from 'konva/lib/Layer';
 import { Stage } from 'konva/lib/Stage';
 import { defineStore } from 'pinia';
-import { Ref, ref } from 'vue';
+import { ref } from 'vue';
 
 interface IGameStore {
+    winPositionX: number;
     started: boolean;
     platforms: Platform[];
     stage?: Stage;
@@ -12,7 +13,7 @@ interface IGameStore {
 }
 
 interface IUseGlobalState {
-    game: Ref<IGameStore>;
+    game: IGameStore;
     setStage: (stage: Stage) => void;
     setLayer: (layer: Layer) => void;
     setGameStatus: (started: boolean) => void;
@@ -20,7 +21,7 @@ interface IUseGlobalState {
 }
 
 const useGlobalState = defineStore('global', () => {
-    const game = ref<IGameStore>({ started: false, platforms: [], stage: undefined, layer: undefined });
+    const game = ref<IGameStore>({ winPositionX: 500, started: false, platforms: [], stage: undefined, layer: undefined });
 
     function setStage(stage: Stage) {
         game.value.stage = stage;

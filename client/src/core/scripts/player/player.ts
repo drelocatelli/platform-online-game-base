@@ -6,15 +6,16 @@ import Visual from './visual';
 
 interface IPlayerAttrib {
     position?: { x: number; y: number };
-    velocity?: { x: number; y: number };
+    speed?: { x: number; y: number };
 }
 
 class Player extends Canvas {
     id;
     position;
+    scrollOffset = 0;
     width;
     height;
-    velocity;
+    speed;
     element?: Rect;
     elements: Rect[] = [];
     animId?: number;
@@ -41,8 +42,8 @@ class Player extends Canvas {
             y: 20,
         },
         maxJumpPos: 200, // less than 200 more tall, triple jump mode
-        velocity: 10,
-        stop_velocity: 5,
+        speed: 10,
+        stop_speed: 5,
     };
 
     constructor(props: { id: string; color: string; socketId: string; attr?: IPlayerAttrib }) {
@@ -54,7 +55,7 @@ class Player extends Canvas {
             x: 20,
             y: 20,
         };
-        this.velocity = props.attr?.velocity ?? {
+        this.speed = props.attr?.speed ?? {
             x: 0,
             y: 0,
         };

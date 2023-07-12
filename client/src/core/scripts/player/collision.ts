@@ -11,16 +11,16 @@ function Collision(this: Player) {
     // top edge collision
     if (this.currentPosition.y < gameState.stage.position().y) {
         this.position.y = 0;
-        this.velocity.y = 0;
+        this.speed.y = 0;
     }
 
     // left edge collision
     if (
         this.keys.left.pressed &&
-        this.currentPosition.x >= Player.defaultProps.velocity &&
+        this.currentPosition.x >= Player.defaultProps.speed &&
         this.currentPosition.x >= gameState.stage.position().x + 10
     ) {
-        this.velocity.x = -Player.defaultProps.stop_velocity;
+        this.speed.x = -Player.defaultProps.stop_speed;
     }
 
     // platform collision detection
@@ -28,11 +28,11 @@ function Collision(this: Player) {
         if (
             platform.element &&
             this.position.y + this.height <= platform.element.y() &&
-            this.position.y + this.height + this.velocity.y >= platform.element.y() &&
+            this.position.y + this.height + this.speed.y >= platform.element.y() &&
             this.position.x + this.width >= platform.element.x() &&
             this.position.x <= platform.element.x() + platform.width
         ) {
-            this.velocity.y = 0;
+            this.speed.y = 0;
         }
     });
 }
