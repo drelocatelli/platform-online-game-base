@@ -1,6 +1,7 @@
 import Canvas from '../canvas';
 import Collision from './collision';
 import Movement from './movement';
+import Visual from './visual';
 
 interface IPlayerAttrib {
     position?: { x: number; y: number };
@@ -62,20 +63,7 @@ class Player extends Canvas {
     }
 
     draw() {
-        const element = document.createElement('div');
-        element.dataset.id = this.id;
-        this.canvas.appendChild(element);
-
-        element.style.cssText = `
-            position: absolute;
-            z-index:1;
-            background: ${this.color};
-            top: ${this.position.y}px;
-            left: ${this.position.x}px;
-            width: ${this.width}px;
-            height: ${this.height}px;
-        `;
-        this.element = element;
+        Visual.call(this).create();
         // remove first elements
         this.elements = this.canvas.querySelectorAll(`[data-id="${this.id}"]`);
         Array.from(this.elements)

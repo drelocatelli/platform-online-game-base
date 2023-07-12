@@ -28,18 +28,6 @@ function Movement(this: Player) {
             platform.position.x += this.velocity.y;
         }
     });
-
-    // platform colision detection
-    Service.sockets.platforms.elements.forEach((platform) => {
-        if (
-            this.position.y + this.height <= platform.position.y &&
-            this.position.y + this.height + this.velocity.y >= platform.position.y &&
-            this.position.x + this.width >= platform.position.x &&
-            this.position.x <= platform.position.x + platform.width
-        ) {
-            this.velocity.y = 0;
-        }
-    });
 }
 
 export default Movement;
