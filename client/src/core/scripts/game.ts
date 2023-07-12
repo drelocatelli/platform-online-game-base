@@ -18,7 +18,7 @@ class Game {
     createPlatforms() {
         const { game: gameState } = useGlobalState();
 
-        let platforms = [new Platform({ position: { x: 200, y: 300 } })];
+        let platforms = [new Platform({ position: { x: 200, y: 300 } }), new Platform({ position: { x: 800, y: 300 } })];
 
         gameState.platforms = platforms;
     }

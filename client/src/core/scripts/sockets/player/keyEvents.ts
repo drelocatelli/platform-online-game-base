@@ -28,9 +28,9 @@ function KeyEventsSocket(this: PlayerSocket) {
                     case 'KeyW':
                     case 'ArrowUp':
                         const p = this.get(player.id)!;
-                        if (p.position.y >= Player.defaultProps.maxJumpPos) {
-                            p.velocity.y -= Player.defaultProps.velocity;
-                        }
+                        // if (p.position.y >= Player.defaultProps.maxJumpPos) {
+                        p.velocity.y -= Player.defaultProps.velocity;
+                        // }
                         break;
                 }
         });
