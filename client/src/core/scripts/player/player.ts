@@ -1,5 +1,6 @@
-import Canvas from './canvas';
-import Service from './service';
+import Canvas from '../canvas';
+import Collision from './collision';
+import Movement from './movement';
 
 interface IPlayerAttrib {
     position?: { x: number; y: number };
@@ -9,13 +10,19 @@ interface IPlayerAttrib {
 class Player extends Canvas {
     id;
     position;
-    private width;
-    private height;
+    width;
+    height;
     velocity;
     element?: HTMLDivElement;
+    elements?: NodeListOf<HTMLDivElement>;
     animId?: number;
     color: string;
     currentPlayer: boolean;
+    currentPosition?: {
+        x: number;
+        y: number;
+        canvas: DOMRect;
+    };
 
     keys = {
         right: {
@@ -69,6 +76,18 @@ class Player extends Canvas {
             height: ${this.height}px;
         `;
         this.element = element;
+        // remove first elements
+        this.elements = this.canvas.querySelectorAll(`[data-id="${this.id}"]`);
+        Array.from(this.elements)
+            .slice(0, -1)
+            .forEach((element) => {
+                element.remove();
+            });
+        this.currentPosition = {
+            x: this.elements[this.elements.length - 1]?.getBoundingClientRect().x,
+            y: this.elements[this.elements.length - 1]?.getBoundingClientRect().y,
+            canvas: this.canvas.getBoundingClientRect(),
+        };
     }
 
     remove() {
@@ -93,66 +112,8 @@ class Player extends Canvas {
     }
 
     animate() {
-        this.animId = requestAnimationFrame(this.animate.bind(this));
-        let elements: NodeListOf<HTMLDivElement> = this.canvas.querySelectorAll(`[data-id="${this.id}"]`);
-        // remove avoiding last
-        Array.from(elements)
-            .slice(0, -1)
-            .forEach((element) => {
-                element.remove();
-            });
-
-        this.update();
-
-        // current player always on top
-        if (this.currentPlayer) {
-            let currentElement = elements[elements.length - 1];
-            if (currentElement) {
-                currentElement.style.zIndex = (elements.length + 1).toString();
-            }
-        }
-
-        const currentPosition = {
-            x: elements[elements.length - 1]?.getBoundingClientRect().x,
-            y: elements[elements.length - 1]?.getBoundingClientRect().y,
-            canvas: this.canvas.getBoundingClientRect(),
-        };
-
-        if (currentPosition.y < currentPosition.canvas.y) {
-            this.position.y = 0;
-            this.velocity.y = 0;
-        }
-
-        if (this.keys.right.pressed) {
-            this.velocity.x = Player.defaultProps.stop_velocity;
-        } else if (
-            this.keys.left.pressed &&
-            currentPosition.x >= Player.defaultProps.velocity &&
-            currentPosition.x >= currentPosition.canvas.x + 10
-        ) {
-            this.velocity.x = -Player.defaultProps.stop_velocity;
-        } else this.velocity.x = 0;
-
-        // move platform with keys
-        Service.sockets.platforms.elements.forEach((platform) => {
-            if (this.keys.right.pressed) {
-                platform.position.x -= this.velocity.y;
-            } else if (this.canReturnBack && this.keys.left.pressed) {
-                platform.position.x += this.velocity.y;
-            }
-        });
-
-        // platform colision detection
-        Service.sockets.platforms.elements.forEach((platform) => {
-            if (
-                this.position.y + this.height <= platform.position.y &&
-                this.position.y + this.height + this.velocity.y >= platform.position.y &&
-                this.position.x + this.width >= platform.position.x &&
-                this.position.x <= platform.position.x + platform.width
-            ) {
-                this.velocity.y = 0;
-            }
-        });
+        Movement.call(this);
+        Collision.call(this);
     }
 }
 

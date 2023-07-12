@@ -1,5 +1,5 @@
 import socket from '@core/server';
-import Player from '../player';
+import Player from '../player/player';
 import _ from 'lodash';
 
 class PlayerSocket {

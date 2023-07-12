@@ -4,7 +4,7 @@ import Service from './service';
 class Game {
     constructor() {
         this.disableKeyScrolling();
-        window.alert('Please wait while contacting server...');
+        // window.alert('Please wait while contacting server...');
 
         Service.sockets.player.listen().connection();
         const globalState = useGlobalState();
