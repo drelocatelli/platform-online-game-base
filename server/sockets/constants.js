@@ -1,4 +1,5 @@
 const globals = {
+    started: false,
     users: new Set(),
 };
 
