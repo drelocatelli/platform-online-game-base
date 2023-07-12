@@ -1,12 +1,13 @@
 import socket from '@core/server';
 
 class GameSocket {
-    constructor() {
-        this.start();
-    }
+    constructor() {}
 
-    start() {
-        socket.on('game_started', () => socket.emit('game_started'));
+    prepare() {
+        socket.emit('game_started');
+        socket.on('game_started', (host) => {
+            console.log('prepare', host);
+        });
     }
 }
 

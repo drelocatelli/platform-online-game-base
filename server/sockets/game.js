@@ -1,11 +1,11 @@
-const { globals } = require('./constants');
-
 class GameSocket {
-    constructor(socket) {
+    constructor(socket, connectionsCount) {
         this.socket = socket;
 
         socket.on('game_started', () => {
-            console.log('login');
+            if (connectionsCount >= 1) {
+                socket.emit('game_started');
+            }
         });
     }
 }

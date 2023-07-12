@@ -1,13 +1,16 @@
 <template>
     <div id="edge">
+        <splash />
         <div id="canvas"></div>
     </div>
 </template>
 
 <script lang="ts">
 import Game from '@core/scripts/game';
+import splash from './components/splash.vue';
 
 export default {
+    components: { splash },
     mounted() {
         new Game();
     },

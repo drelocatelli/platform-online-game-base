@@ -110,7 +110,6 @@ class Player extends Canvas {
             if (currentElement) {
                 currentElement.style.zIndex = (elements.length + 1).toString();
             }
-            console.log(this.id);
         }
 
         const currentPosition = {
