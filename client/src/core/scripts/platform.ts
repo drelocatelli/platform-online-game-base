@@ -38,6 +38,7 @@ class Platform {
 
     draw() {
         const { game } = useGlobalState();
+        this.element?.moveToTop();
         game.layer.add(this.element);
     }
 }

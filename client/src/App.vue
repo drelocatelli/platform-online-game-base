@@ -27,7 +27,6 @@ body {
 
 #edge {
     display: flex;
-    background-color: #333;
     width: 800px;
     height: 500px;
     position: absolute;
@@ -41,6 +40,5 @@ body {
     position: absolute;
     width: -webkit-fill-available;
     height: -webkit-fill-available;
-    border: 1px solid #fff;
 }
 </style>
