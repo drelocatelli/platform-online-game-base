@@ -1,4 +1,3 @@
-import Service from '../service';
 import Player from './player';
 
 function Movement(this: Player) {
@@ -29,13 +28,13 @@ function Movement(this: Player) {
         } else this.velocity.x = 0;
 
         // move platform with keys
-        Service.sockets.platforms.elements.forEach((platform) => {
-            if (this.keys.right.pressed) {
-                platform.position.x -= this.velocity.y;
-            } else if (this.canReturnBack && this.keys.left.pressed) {
-                platform.position.x += this.velocity.y;
-            }
-        });
+        // Service.sockets.platforms.elements.forEach((platform) => {
+        //     if (this.keys.right.pressed) {
+        //         platform.position.x -= this.velocity.y;
+        //     } else if (this.canReturnBack && this.keys.left.pressed) {
+        //         platform.position.x += this.velocity.y;
+        //     }
+        // });
     };
 
     return {

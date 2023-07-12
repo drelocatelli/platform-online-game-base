@@ -1,7 +1,10 @@
-import Service from '../service';
+import Platform from '../platform';
 import Player from './player';
+import useGlobalState from '@core/store/global';
 
 function Collision(this: Player) {
+    const { game: gameState } = useGlobalState();
+
     // edge collision
     this.currentPosition = this.currentPosition!;
 
@@ -21,7 +24,7 @@ function Collision(this: Player) {
     }
 
     // platform collision detection
-    Service.sockets.platforms.elements.forEach((platform) => {
+    gameState.platforms.forEach((platform: Platform) => {
         if (
             this.position.y + this.height <= platform.position.y &&
             this.position.y + this.height + this.velocity.y >= platform.position.y &&

@@ -1,23 +1,26 @@
-import useGlobalState from '@core/state';
 import Service from './service';
+import Platform from './platform';
+import useGlobalState from '@core/store/global';
 
 class Game {
     constructor() {
+        console.log('game started');
         this.disableKeyScrolling();
         // window.alert('Please wait while contacting server...');
 
+        this.createPlatforms();
         Service.sockets.player.listen().connection();
-        const globalState = useGlobalState();
-        let canvasEl = document.getElementById('canvas') as HTMLDivElement;
         let splashEl = document.getElementById('splash') as HTMLDivElement;
-        // if (globalState.game.started) {
-        // canvasEl.style.removeProperty('display');
         Service.sockets.player.listen().keyEvents();
-        // } else {
-        //     canvasEl.style.display = 'none';
         splashEl.style.display = 'none';
-        //     Service.sockets.game.prepare();
-        // }
+    }
+
+    createPlatforms() {
+        const { game: gameState } = useGlobalState();
+
+        let platforms = [new Platform({ position: { x: 200, y: 300 } })];
+
+        gameState.platforms = platforms;
     }
 
     disableKeyScrolling() {

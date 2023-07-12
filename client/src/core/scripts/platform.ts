@@ -10,6 +10,7 @@ interface IProps {
 
 class Platform {
     canvas;
+    className?: string;
     element: HTMLDivElement;
     background = '#33b233';
     position = {
@@ -20,8 +21,8 @@ class Platform {
     width = 200;
     height = 20;
 
-    constructor(canvas: HTMLDivElement, props?: IProps) {
-        this.canvas = canvas;
+    constructor(props?: IProps) {
+        this.canvas = document.querySelector('#canvas') as HTMLDivElement;
         this.element = document.createElement('div');
         this.background = props?.background ?? this.background;
         this.height = props?.height ?? this.height;
@@ -30,10 +31,12 @@ class Platform {
             this.position.x = props?.position?.x ?? this.position.x;
             this.position.y = props?.position?.y ?? this.position.y;
         }
+        this.draw();
     }
 
     draw() {
         this.element.classList.add('platform');
+        if (this?.className) this.element.classList.add(this.className);
         this.element.style.cssText = `
             background: ${this.background};
             width: ${this.width}px;

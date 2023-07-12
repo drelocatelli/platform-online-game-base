@@ -1,4 +1,3 @@
-import socket from '@core/server';
 import Player from '../../player/player';
 import _ from 'lodash';
 import KeyEventsSocket from './keyEvents';

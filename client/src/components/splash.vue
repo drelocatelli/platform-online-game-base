@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts">
-import useGlobalState from './../core/state';
+import useGlobalState from './../core/store/global';
 export default {
     setup() {
         return {
@@ -19,3 +19,4 @@ export default {
     },
 };
 </script>
+../core/store/state
