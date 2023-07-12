@@ -9,8 +9,18 @@ function Movement(this: Player) {
     const gravity = () => {
         this.position.y += this.velocity.y;
         this.position.x += this.velocity.x;
-        if (this.position.y + this.height + this.velocity.y <= this.canvas.offsetHeight) this.velocity.y += Player.defaultProps.gravity;
+        if (this.position.y + this.height + this.velocity.y <= gameState.stage.height()) this.velocity.y += Player.defaultProps.gravity;
         else this.velocity.y = 0;
+    };
+
+    const moveBackground = () => {
+        gameState.platforms.forEach((_: Platform, i: number) => {
+            if (this.keys.right.pressed) {
+                decrementPlatformPositionX(i, this.velocity.x);
+            } else if (this.canReturnBack && this.keys.left.pressed) {
+                decrementPlatformPositionX(i, this.velocity.x);
+            }
+        });
     };
 
     const animate = () => {
@@ -25,18 +35,14 @@ function Movement(this: Player) {
         if (this.currentPlayer && this.elements) {
             let currentElement = this.elements[this.elements.length - 1];
             if (currentElement) {
-                currentElement.style.zIndex = (this.elements.length + 1).toString();
+                currentElement.zIndex(currentElement.zIndex() + 1);
             }
         }
         // move platform with keys
-        if (this.id === Service.sockets.player.first().id) {
-            gameState.platforms.forEach((_: Platform, i: number) => {
-                if (this.keys.right.pressed) {
-                    decrementPlatformPositionX(i, this.velocity.x);
-                } else if (this.canReturnBack && this.keys.left.pressed) {
-                    decrementPlatformPositionX(i, this.velocity.x);
-                }
-            });
+        if (this.firstPlayerMoveBgPosition) {
+            if (this.id === Service.sockets.player.first().id) moveBackground();
+        } else {
+            moveBackground();
         }
 
         if (this.keys.right.pressed) {

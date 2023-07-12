@@ -1,46 +1,42 @@
+import Konva from 'konva';
 import Player from './player';
+import useGlobalState from '@core/store/global';
 
 function Visual(this: Player) {
-    const create = () => {
-        const element = document.createElement('div');
-        element.dataset.id = this.id;
-        this.canvas.appendChild(element);
+    const { game } = useGlobalState();
 
-        element.style.cssText = `
-        position: absolute;
-        z-index:1;
-        background: ${this.color};
-        top: ${this.position.y}px;
-        left: ${this.position.x}px;
-        width: ${this.width}px;
-        height: ${this.height}px;
-    `;
-        this.element = element;
+    const create = () => {
+        let element = new Konva.Rect({
+            id: this.id,
+            x: this.position.x,
+            y: this.position.y,
+            width: this.width,
+            height: this.height,
+            fill: this.color,
+        });
+        game.layer.add(element);
+        game.stage.add(game.layer);
+        this.elements.push(element);
     };
 
     const remove = () => {
         if (this.animId) {
             let removeAnim = requestAnimationFrame(this.remove.bind(this));
-            let containers = this.canvas.querySelectorAll(`[data-id="${this.id}"]`);
-            containers.forEach((container) => container.remove());
+            this.elements.forEach((container) => container.remove());
             cancelAnimationFrame(this.animId);
-            if (containers.length == 0) {
+            if (this.elements.length == 0) {
                 cancelAnimationFrame(removeAnim);
             }
         }
     };
 
     const track = () => {
-        this.elements = this.canvas.querySelectorAll(`[data-id="${this.id}"]`);
-        Array.from(this.elements)
-            .slice(0, -1)
-            .forEach((element) => {
-                element.remove();
-            });
+        this.elements.slice(0, -1).forEach((element) => {
+            element.remove();
+        });
         this.currentPosition = {
-            x: this.elements[this.elements.length - 1]?.getBoundingClientRect().x,
-            y: this.elements[this.elements.length - 1]?.getBoundingClientRect().y,
-            canvas: this.canvas.getBoundingClientRect(),
+            x: this.elements[this.elements.length - 1].position().x,
+            y: this.elements[this.elements.length - 1].position().y,
         };
     };
 

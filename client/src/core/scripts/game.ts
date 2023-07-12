@@ -6,8 +6,6 @@ class Game {
     constructor() {
         console.log('game started');
         this.disableKeyScrolling();
-        // window.alert('Please wait while contacting server...');
-
         Service.sockets.player.listen().connection();
         let splashEl = document.getElementById('splash') as HTMLDivElement;
         Service.sockets.player.listen().keyEvents();
@@ -17,10 +15,7 @@ class Game {
 
     createPlatforms() {
         const { game: gameState } = useGlobalState();
-
-        let platforms = [new Platform({ position: { x: 200, y: 300 } }), new Platform({ position: { x: 800, y: 300 } })];
-
-        gameState.platforms = platforms;
+        gameState.platforms = [new Platform({ position: { x: 200, y: 300 } }), new Platform({ position: { x: 800, y: 300 } })];
     }
 
     disableKeyScrolling() {

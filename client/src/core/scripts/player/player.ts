@@ -1,3 +1,4 @@
+import { Rect } from 'konva/lib/shapes/Rect';
 import Canvas from '../canvas';
 import Collision from './collision';
 import Movement from './movement';
@@ -14,15 +15,14 @@ class Player extends Canvas {
     width;
     height;
     velocity;
-    element?: HTMLDivElement;
-    elements?: NodeListOf<HTMLDivElement>;
+    element?: Rect;
+    elements: Rect[] = [];
     animId?: number;
     color: string;
     currentPlayer: boolean;
     currentPosition?: {
         x: number;
         y: number;
-        canvas: DOMRect;
     };
 
     keys = {

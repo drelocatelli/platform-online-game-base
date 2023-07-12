@@ -9,7 +9,7 @@ function Collision(this: Player) {
     this.currentPosition = this.currentPosition!;
 
     // top edge collision
-    if (this.currentPosition.y < this.currentPosition.canvas.y) {
+    if (this.currentPosition.y < gameState.stage.position().y) {
         this.position.y = 0;
         this.velocity.y = 0;
     }
@@ -18,7 +18,7 @@ function Collision(this: Player) {
     if (
         this.keys.left.pressed &&
         this.currentPosition.x >= Player.defaultProps.velocity &&
-        this.currentPosition.x >= this.currentPosition.canvas.x + 10
+        this.currentPosition.x >= gameState.stage.position().x + 10
     ) {
         this.velocity.x = -Player.defaultProps.stop_velocity;
     }
@@ -26,10 +26,11 @@ function Collision(this: Player) {
     // platform collision detection
     gameState.platforms.forEach((platform: Platform) => {
         if (
-            this.position.y + this.height <= platform.position.y &&
-            this.position.y + this.height + this.velocity.y >= platform.position.y &&
-            this.position.x + this.width >= platform.position.x &&
-            this.position.x <= platform.position.x + platform.width
+            platform.element &&
+            this.position.y + this.height <= platform.element.y() &&
+            this.position.y + this.height + this.velocity.y >= platform.element.y() &&
+            this.position.x + this.width >= platform.element.x() &&
+            this.position.x <= platform.element.x() + platform.width
         ) {
             this.velocity.y = 0;
         }
