@@ -16,12 +16,13 @@ function Movement(this: Player) {
     };
 
     const resetPosition = () => {
-        // go to the position 0 every screen exit
-        if (this.scrollOffset === this.canvas.offsetWidth) {
+        // Verificar se a posição atual ultrapassou a largura do canvas
+        if (this.position.x > this.canvas.offsetWidth) {
             this.position.x = 0;
-            this.screenLevel += 2;
-        } else if (this.screenLevel > 0 && this.scrollOffset / this.screenLevel === this.canvas.offsetWidth) {
-            this.position.x = 0;
+            this.screenLevel += 1;
+        } else if (this.position.x <= 0 && this.canReturnBack) {
+            this.screenLevel -= 1;
+            this.position.x = this.canvas.offsetWidth;
         }
     };
 
@@ -36,6 +37,9 @@ function Movement(this: Player) {
             resetPosition();
         } else if (this.keys.left.pressed) {
             this.scrollOffset += Player.defaultProps.stop_speed;
+            if (this.canReturnBack) {
+                resetPosition();
+            }
         }
     };
 
