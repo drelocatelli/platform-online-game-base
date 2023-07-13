@@ -24,6 +24,8 @@ function Movement(this: Player) {
         } else if (this.position.x <= 0 && this.canReturnBack) {
             if (this.screenLevel >= 1) {
                 this.screenLevel -= 1;
+            } else if (this.screenLevel == 0) {
+                return;
             }
             this.position.x = this.canvas.offsetWidth;
             this.keys.right.pressed = false;

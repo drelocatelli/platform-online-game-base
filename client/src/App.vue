@@ -1,6 +1,7 @@
 <template>
     <div id="edge">
         <splash />
+        <div id="screen">a</div>
         <div id="canvas"></div>
     </div>
 </template>
