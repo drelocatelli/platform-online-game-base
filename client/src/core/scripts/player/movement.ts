@@ -20,9 +20,13 @@ function Movement(this: Player) {
         if (this.position.x > this.canvas.offsetWidth) {
             this.position.x = 0;
             this.screenLevel += 1;
+            this.keys.left.pressed = false;
         } else if (this.position.x <= 0 && this.canReturnBack) {
-            this.screenLevel -= 1;
+            if (this.screenLevel >= 1) {
+                this.screenLevel -= 1;
+            }
             this.position.x = this.canvas.offsetWidth;
+            this.keys.right.pressed = false;
         }
     };
 
@@ -44,11 +48,13 @@ function Movement(this: Player) {
     };
 
     const moveBackground = () => {
-        gameState.platforms.forEach((_: Platform, i: number) => {
+        gameState.platforms.forEach((platform: Platform, i: number) => {
             if (this.keys.right.pressed) {
                 decrementPlatformPositionX(i, this.speed.x);
             } else if (this.canReturnBack && this.keys.left.pressed) {
-                decrementPlatformPositionX(i, this.speed.x);
+                if (platform.initialPosition.x !== platform.element?.position().x) {
+                    decrementPlatformPositionX(i, this.speed.x);
+                }
             }
         });
         scrollMoviment();

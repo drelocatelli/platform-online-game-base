@@ -5,7 +5,7 @@ import Player from './player';
 / the variable is called winPositionX
 */
 function doWhenWin(this: Player) {
-    window.alert('You win!');
+    console.log('You win!');
 }
 
 export default doWhenWin;

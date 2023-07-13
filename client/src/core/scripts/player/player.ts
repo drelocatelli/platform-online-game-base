@@ -14,6 +14,7 @@ class Player extends Canvas {
     screenLevel = 0;
     position;
     scrollOffset = 0;
+    screenPosX = 0;
     width;
     height;
     speed;

@@ -25,14 +25,19 @@ function Collision(this: Player) {
 
     // platform collision detection
     gameState.platforms.forEach((platform: Platform) => {
-        if (
-            platform.element &&
-            this.position.y + this.height <= platform.element.y() &&
-            this.position.y + this.height + this.speed.y >= platform.element.y() &&
-            this.position.x + this.width >= platform.element.x() &&
-            this.position.x <= platform.element.x() + platform.width
-        ) {
-            this.speed.y = 0;
+        if (platform.element) {
+            // horizontal or vertical platform movement block
+            if (platform.block == 'vertically' && this.position.x <= platform.element.x()) {
+                this.position.x = platform.element.x();
+            }
+            if (
+                this.position.y + this.height <= platform.element.y() &&
+                this.position.y + this.height + this.speed.y >= platform.element.y() &&
+                this.position.x + this.width >= platform.element.x() &&
+                this.position.x <= platform.element.x() + platform.width
+            ) {
+                this.speed.y = 0;
+            }
         }
     });
 }

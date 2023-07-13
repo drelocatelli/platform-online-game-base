@@ -14,8 +14,25 @@ class Game {
     }
 
     createPlatforms() {
+        this.leftEdgePlatform(); // do not remove this
         const { game: gameState } = useGlobalState();
-        gameState.platforms = [new Platform({ position: { x: 200, y: 300 } }), new Platform({ position: { x: 800, y: 300 } })];
+        [new Platform({ position: { x: 200, y: 300 } }), new Platform({ position: { x: 800, y: 300 } })].forEach((platform) => {
+            gameState.platforms.push(platform);
+        });
+    }
+
+    leftEdgePlatform() {
+        const { game: gameState } = useGlobalState();
+        gameState.platforms.push(
+            new Platform({
+                position: { x: 0, y: 0 },
+                height: 10000,
+                width: 1,
+                background: 'transparent',
+                block: 'vertically',
+                details: ['left-edge'],
+            }),
+        );
     }
 
     disableKeyScrolling() {
