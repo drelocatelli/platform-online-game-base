@@ -5,9 +5,10 @@ import Player from './player';
 import useGlobalState, { IUseGlobalState } from '@core/store/global';
 
 function Movement(this: Player) {
-    var currentPlayerScreenLevel = 0;
-
+    //@ts-ignore
     const { game: gameState, decrementPlatformPositionX }: IUseGlobalState = useGlobalState();
+    //@ts-ignore
+    const globalState: IUseGlobalState = useGlobalState();
 
     const gravity = () => {
         this.position.y += this.speed.y;
@@ -31,7 +32,6 @@ function Movement(this: Player) {
             } else if (this.screenLevel == 0) {
                 return;
             }
-            currentPlayerScreenLevel = this.screenLevel;
             this.position.x = this.canvas.offsetWidth;
             this.keys.right.pressed = false;
         }
@@ -70,10 +70,19 @@ function Movement(this: Player) {
     };
 
     const screenLevelDiff = () => {
-        // set player opacity of screen level
-        if (!this.currentPlayer && this.screenLevel !== currentPlayerScreenLevel) {
-            const player = Service.sockets.player.players.find((player) => player.id === this.id);
-            if (player) player.opacity = 0.2;
+        // set player opacity of screen level diff
+        if (!this.currentPlayer) {
+            const currentPlayer = Service.sockets.player.players.find((player) => player.currentPlayer);
+            if (currentPlayer) {
+                if (currentPlayer.screenLevel === this.screenLevel) {
+                    this.opacity = 1;
+                    globalState.setPlayerLeft().remove({ id: this.id });
+                } else {
+                    this.opacity = gameState.minOpacity;
+                    const leftPos = currentPlayer.screenLevel > this.screenLevel;
+                    globalState.setPlayerLeft().add({ id: this.id, direction: leftPos ? 'left' : 'right' });
+                }
+            }
         }
     };
 
