@@ -5,6 +5,8 @@ import Player from './player';
 import useGlobalState, { IUseGlobalState } from '@core/store/global';
 
 function Movement(this: Player) {
+    var currentPlayerScreenLevel = 0;
+
     const { game: gameState, decrementPlatformPositionX }: IUseGlobalState = useGlobalState();
 
     const gravity = () => {
@@ -20,19 +22,24 @@ function Movement(this: Player) {
         if (this.position.x > this.canvas.offsetWidth) {
             this.position.x = 0;
             this.screenLevel += 1;
+            Service.sockets.player.setScreenLevel(this.id, this.screenLevel);
             this.keys.left.pressed = false;
         } else if (this.position.x <= 0 && this.canReturnBack) {
             if (this.screenLevel >= 1) {
                 this.screenLevel -= 1;
+                Service.sockets.player.setScreenLevel(this.id, this.screenLevel);
             } else if (this.screenLevel == 0) {
                 return;
             }
+            currentPlayerScreenLevel = this.screenLevel;
             this.position.x = this.canvas.offsetWidth;
             this.keys.right.pressed = false;
         }
+        // set screen level indicator
+        (document.querySelector('#screenLevel') as HTMLDivElement).innerHTML = this.screenLevel.toString();
     };
 
-    const scrollMoviment = () => {
+    const scrollMovement = () => {
         if (this.keys.right.pressed) {
             this.scrollOffset += Player.defaultProps.stop_speed;
 
@@ -59,7 +66,15 @@ function Movement(this: Player) {
                 }
             }
         });
-        scrollMoviment();
+        scrollMovement();
+    };
+
+    const screenLevelDiff = () => {
+        // set player opacity of screen level
+        if (!this.currentPlayer && this.screenLevel !== currentPlayerScreenLevel) {
+            const player = Service.sockets.player.players.find((player) => player.id === this.id);
+            if (player) player.opacity = 0.2;
+        }
     };
 
     const animate = () => {
@@ -77,12 +92,15 @@ function Movement(this: Player) {
                 currentElement.zIndex(currentElement.zIndex() + 1);
             }
         }
+
         // move platform with keys
         if (this.firstPlayerMoveBgPosition) {
             if (this.id === Service.sockets.player.first().id) moveBackground();
         } else {
             moveBackground();
         }
+
+        screenLevelDiff();
 
         if (this.keys.right.pressed) {
             this.speed.x = Player.defaultProps.stop_speed;
