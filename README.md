@@ -10,4 +10,4 @@ You can set these variables:
 (canvas, firstPlayerMoveBgPosition, canReturnBack, createBackground(img source))
 
 ```
-[![Video Title](https://img.youtube.com/vi/92Ass5A0q-c/0.jpg)](https://youtu.be/JGNEJz5wwHM)
+[![Video Title](https://img.youtube.com/vi/92Ass5A0q-c/0.jpg)](https://www.youtube.com/watch?v=4i2Aff03wXE&t=26s)
